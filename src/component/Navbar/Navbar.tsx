@@ -1,9 +1,7 @@
 "use client";
-import React, { useEffect } from "react";
-import Dropdown from "../Dropdown/Dropdown";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserMock } from "@/app/User";
 
 function Navbar() {   
   const pathname = usePathname(); // For active tab detection
