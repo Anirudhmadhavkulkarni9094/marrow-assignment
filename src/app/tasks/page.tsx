@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import CreateTaskModal from "@/component/CreateTaskModal";
 import axios from "axios";
+import TaskCard from "@/component/TaskCard";
 
 function Page() {
   interface Task {
@@ -127,28 +128,14 @@ function Page() {
       </div>
 
       {/* Tasks List */}
-      <div className="space-y-4">
+      <div className="gap-10 space-y-4">
         {currentTasks.length === 0 ? (
           <p className="text-center text-gray-500">
             No tasks match the applied filters.
           </p>
         ) : (
           currentTasks.map((task: any, index: number) => (
-            <div key={index} className="bg-white shadow-md rounded-lg p-4">
-              <h3 className="font-semibold text-lg">{task.title}</h3>
-              <p className="text-sm text-gray-600">{task.description}</p>
-              <div className="flex justify-between mt-3">
-                <span className="text-sm text-gray-500">
-                  Assigned to: {task.assignedTo}
-                </span>
-                <span className="text-sm text-gray-500">
-                  Priority: {task.priority}
-                </span>
-              </div>
-              <div className="text-sm text-gray-500 mt-2">
-                Tags: {task.tags.join(", ")}
-              </div>
-            </div>
+            <TaskCard task={task} key={index}></TaskCard>
           ))
         )}
       </div>

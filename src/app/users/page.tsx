@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext'; // Adjust path to UserContext
+import TaskCard from '@/component/TaskCard';
 
 function Page() {
   const { user, taskList, loading, error } = useContext(UserContext);
@@ -19,21 +20,12 @@ function Page() {
         setFilteredTasks(filtered);
       }
     } else {
-      setFilteredTasks([]); // Clear tasks when no user is selected
+      setFilteredTasks([]);
     }
   }, [currentUser, taskList]);
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentUser(event.target.value);
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority.toLowerCase()) {
-      case 'high': return 'text-red-600 bg-red-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'low': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
   };
 
   if (loading) {
@@ -55,7 +47,7 @@ function Page() {
           onChange={handleUserChange}
           className="p-3 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 bg-white"
         >
-          <option value="" disabled>Select a User</option>
+          <option value="" >Select a User</option>
           {user && user.map((userItem) => (
             <option key={userItem._id} value={userItem.name}>
               {userItem.name}
@@ -100,25 +92,9 @@ function Page() {
         </h2>
 
         {filteredTasks.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className=" gap-8">
             {filteredTasks.map((task) => (
-              <div key={task._id} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">{task.title}</h3>
-                <p className="text-sm text-gray-600 mb-4">{task.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {task.tags.map((tag:string, idx:number) => (
-                    <span key={idx} className="bg-blue-100 text-blue-600 text-xs font-semibold px-2 py-1 rounded-full">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className={`px-2 py-1 rounded-full font-semibold ${getPriorityColor(task.priority)}`}>
-                    {task.priority} Priority
-                  </span>
-                  <span className="text-gray-400">{new Date(task.createdAt).toLocaleDateString()}</span>
-                </div>
-              </div>
+              <TaskCard task={task} key={task._id}/>
             ))}
           </div>
         ) : (
