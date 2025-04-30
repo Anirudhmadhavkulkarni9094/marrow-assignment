@@ -56,3 +56,40 @@ export async function POST(req:any) {
     );
   }
 }
+
+
+export async function DELETE(req: Request) {
+  try {
+    // Get the request body
+    const { taskId } = await req.json();  // Extract taskId from the request body
+
+    // Validate taskId
+    if (!taskId) {
+      return NextResponse.json(
+        { message: 'Task ID is required.' },
+        { status: 400 }
+      );
+    }
+
+    // Connect to MongoDB
+    await connectToDatabase();
+
+    // Find and delete the task by its ID
+    const deletedTask = await Task.findByIdAndDelete(taskId);
+
+    // Check if task was found and deleted
+    if (!deletedTask) {
+      return NextResponse.json(
+        { message: 'Task not found.' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ message: 'Task deleted successfully.' }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: 'Error deleting task', error: error.message },
+      { status: 500 }
+    );
+  }
+}
