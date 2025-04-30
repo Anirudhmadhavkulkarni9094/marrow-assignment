@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import CreateTaskModal from "@/component/CreateTaskModal";
+import CreateTaskModal from "@/component/Modal/CreateTaskModal";
 import axios from "axios";
-import TaskCard from "@/component/TaskCard";
+import TaskCard from "@/component/Cards/TaskCard";
 
 function Page() {
   interface Task {

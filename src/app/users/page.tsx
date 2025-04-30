@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext'; // Adjust path to UserContext
-import TaskCard from '@/component/TaskCard';
+import TaskCard from '@/component/Cards/TaskCard';
 
 function Page() {
   const { user, taskList, loading, error } = useContext(UserContext);
