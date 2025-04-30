@@ -12,13 +12,10 @@ function Page() {
   // When user or taskList changes, filter the tasks based on selected user
   useEffect(() => {
     if (currentUser && taskList) {
-      const selectedUser = taskList.find((task) => task.assignedTo === currentUser);
-      if (selectedUser) {
-        const filtered = taskList.filter(
-          (task) => task.assignedTo.toLowerCase() === currentUser.toLowerCase()
-        );
-        setFilteredTasks(filtered);
-      }
+      const filtered = taskList.filter(
+        (task) => task.assignedTo.toLowerCase().trim() === currentUser.toLowerCase().trim()
+      );
+      setFilteredTasks(filtered);
     } else {
       setFilteredTasks([]);
     }
