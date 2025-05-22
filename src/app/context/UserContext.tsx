@@ -20,6 +20,7 @@ interface UserContextType {
   taskList: Task[] | null;
   loading: boolean;
   error: string | null;
+  isDarkMode : boolean;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -27,6 +28,7 @@ export const UserContext = createContext<UserContextType>({
   taskList: null,
   loading: true,
   error: null,
+  isDarkMode : false,
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -68,8 +70,24 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, taskList]);
 
+const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia) {
+      const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      setIsDarkMode(darkModeMediaQuery.matches);
+
+      // Optional: listen for changes in system theme
+      const handler = (e:any) => setIsDarkMode(e.matches);
+      darkModeMediaQuery.addEventListener("change", handler);
+
+      return () => darkModeMediaQuery.removeEventListener("change", handler);
+    }
+  }, []);
+
+  console.log(isDarkMode ? "Dark mode" : "Light mode");
   return (
-    <UserContext.Provider value={{ user, taskList, loading, error }}>
+    <UserContext.Provider value={{ user, taskList, loading, error , isDarkMode}}>
       {children}
     </UserContext.Provider>
   );

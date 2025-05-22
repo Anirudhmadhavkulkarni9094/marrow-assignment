@@ -39,6 +39,7 @@ export async function POST(req: Request) {
     if (!Array.isArray(tasks)) {
       return NextResponse.json({ error: 'Invalid task data' }, { status: 400 });
     }
+    console.log(tasks);
 
     const csv = generateCSV(tasks);
 

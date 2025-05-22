@@ -16,7 +16,7 @@ function Page() {
   }
   
   const [tasks, setTasks] = useState<any[]>([]);
-  const { user, taskList } = useContext(UserContext);
+  const { user, taskList, isDarkMode } = useContext(UserContext);
   console.log(user);
   useEffect(() => {
     setTasks(taskList || []);
@@ -71,61 +71,89 @@ function Page() {
   return (
     <div className="p-10">
       {/* Filter & Sort */}
-      <div className="mb-5 flex gap-4 w-full justify-around items-baseline">
-        <select
-          name="tag"
-          onChange={(e) => setFilters({ ...filters, tag: e.target.value })}
-          className="p-2 border rounded-md"
-        >
-          <option value="">Filter by Tag</option>
-          <option value="assignment">Assignment</option>
-          <option value="urgent">Urgent</option>
-          <option value="documentation">Documentation</option>
-        </select>
-        <select
-          name="priority"
-          onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
-          className="p-2 border rounded-md"
-        >
-          <option value="">Filter by Priority</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-        </select>
-        <select
-          name="assignedTo"
-          onChange={(e) =>
-            setFilters({ ...filters, assignedTo: e.target.value })
-          }
-          className="p-2 border rounded-md"
-        >
-          <option value="">Filter by Assignee</option>
-          {user?.map((u: any) => (
-            <option key={u._id} value={u.name.toLowerCase()}>
-              {u.name}
-            </option>
-          ))}
-        </select>
-        <select
-          onChange={(e) => setSortBy(e.target.value)}
-          className="p-2 border rounded-md"
-        >
-          <option value="createdAt">Sort by Date</option>
-          <option value="priority">Sort by Priority</option>
-        </select>
-        <button
-          className="p-2 border rounded-md"
-          onClick={() => setFilters({ tag: "", priority: "", assignedTo: "" })}
-        >
-          Clear All X
-        </button>
-        <button
-          className="p-2 border rounded-md bg-blue-500 text-white"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Create Task
-        </button>
-      </div>
+      <div
+  className={`mb-5 flex gap-4 w-full justify-around items-baseline 
+    ${isDarkMode ? "bg-gray-800 text-gray-200" : "bg-white text-gray-900"} 
+    p-4 rounded-md`}
+>
+  <select
+    name="tag"
+    onChange={(e) => setFilters({ ...filters, tag: e.target.value })}
+    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
+      isDarkMode
+        ? "bg-gray-700 border-gray-600 text-gray-200 focus:ring-blue-400"
+        : "bg-white border-gray-300 text-gray-900 focus:ring-blue-600"
+    }`}
+  >
+    <option value="">Filter by Tag</option>
+    <option value="assignment">Assignment</option>
+    <option value="urgent">Urgent</option>
+    <option value="documentation">Documentation</option>
+  </select>
+
+  <select
+    name="priority"
+    onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
+    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
+      isDarkMode
+        ? "bg-gray-700 border-gray-600 text-gray-200 focus:ring-blue-400"
+        : "bg-white border-gray-300 text-gray-900 focus:ring-blue-600"
+    }`}
+  >
+    <option value="">Filter by Priority</option>
+    <option value="High">High</option>
+    <option value="Medium">Medium</option>
+    <option value="Low">Low</option>
+  </select>
+
+  <select
+    name="assignedTo"
+    onChange={(e) => setFilters({ ...filters, assignedTo: e.target.value })}
+    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
+      isDarkMode
+        ? "bg-gray-700 border-gray-600 text-gray-200 focus:ring-blue-400"
+        : "bg-white border-gray-300 text-gray-900 focus:ring-blue-600"
+    }`}
+  >
+    <option value="">Filter by Assignee</option>
+    {user?.map((u: any) => (
+      <option key={u._id} value={u.name.toLowerCase()}>
+        {u.name}
+      </option>
+    ))}
+  </select>
+
+  <select
+    onChange={(e) => setSortBy(e.target.value)}
+    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
+      isDarkMode
+        ? "bg-gray-700 border-gray-600 text-gray-200 focus:ring-blue-400"
+        : "bg-white border-gray-300 text-gray-900 focus:ring-blue-600"
+    }`}
+  >
+    <option value="createdAt">Sort by Date</option>
+    <option value="priority">Sort by Priority</option>
+  </select>
+
+  <button
+    className={`p-2 border rounded-md ${
+      isDarkMode
+        ? "border-gray-600 text-gray-200 hover:bg-gray-700"
+        : "border-gray-300 text-gray-900 hover:bg-gray-200"
+    }`}
+    onClick={() => setFilters({ tag: "", priority: "", assignedTo: "" })}
+  >
+    Clear All X
+  </button>
+
+  <button
+    className="p-2 border rounded-md bg-blue-500 text-white hover:bg-blue-600"
+    onClick={() => setIsModalOpen(true)}
+  >
+    Create Task
+  </button>
+</div>
+
 
       {/* Tasks List */}
       <div className="gap-10 space-y-4">
@@ -177,7 +205,7 @@ function Page() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onCreate={handleCreateTask}
-          users={user || []}
+          users={user}
         />
       )}
     </div>
